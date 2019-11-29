@@ -1,0 +1,3 @@
+If you have simulate the model through "opinion_dynamics.m" and obtain your data, 
+before running the .mlx file you should at first transform some variables as we described in the paper;
+If you have not simulate by yourself, we provide the data used in the paper as an example. 
