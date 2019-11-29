@@ -1,3 +1,4 @@
-"Data form simulations" are raw data of 1000 repeated simulations with evenly distributed parameters, which made Fig.2, Fig.3, Fig.4, Fig.5(b);
-"oncedata_r_equals_0.1" are raw data of once time simulations with certain parameters, which made Fig.1.
+"Data from simulations" are raw data of 1000 repeated simulations with evenly distributed parameters, which made Fig.2, Fig.3, Fig.4, Fig.5(b);
+"oncedata_r_equals_0.1" are raw data of once time simulations with certain parameters, which made Fig.1(a).
+"oncedata_r_equals_0.35" are raw data of once time simulations with certain parameters, which made Fig.1(b).
 "loc_satisfied" are raw data of the generated data through the probability distribution that pass k-s test with 86% percentage of grids, which made Fig.5(a).
