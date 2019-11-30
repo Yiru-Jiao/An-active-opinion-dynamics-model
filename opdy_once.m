@@ -1,4 +1,6 @@
 % simulate once to observe one-time opinion evolution
+% *note*: if you meet the bug "Matrix dimensions must agree. error dynamic_coda(line 13) CA=A*2+F"
+%         look at line 49~53 and 62~66
 %--------------------------------------------------------
 % Place this code in the same path as the "Functions" folder before running it
 addpath(genpath(pwd));
@@ -6,7 +8,7 @@ addpath(genpath(pwd));
 % storage allocation
 oncedata=zeros(10000,60);
 countn=1;
-for n=[100 200 300];     % size of the group
+for n=[100,200,300];   % size of the group
     countmu=1;
     oncedata0=zeros(10000,20);
     for mu=[0 0.41 0.51 0.6 1];
@@ -16,7 +18,7 @@ for n=[100 200 300];     % size of the group
             sigma=mu/3;
         end
         c=10;       % the population's conservative degree of the issue
-        r=0.1;     % the population's rejection to factions
+        r=0.35;     % the population's rejection to factions
         a=0.3;      % degree of adequate interaction 
         period=10;  % % when the difference of group opinion in successive 10 cycles are less than delta(here is 1E-15), the evolution is believed as stablized
         % Initialization P=[0~1], A=[-1,1], F=[-1,0,1], h=[0~1], u=[-1,-0.1,1]
@@ -44,6 +46,11 @@ for n=[100 200 300];     % size of the group
             % similarity effect determines interaction willingness
             Fi=F(i,:);
             Fi(Fi==inf)=[];
+            % if you meet the bug "Matrix dimensions must agree. error dynamic_coda(line 13) CA=A*2+F"
+            % just uncomment the code below. It is a strange bug that matlab add a 0 at the end of Fi
+            if length(Fi)==find(F(i,:)==inf,1)
+                Fi=Fi(1:find(F(i,:)==inf,1)-1);
+            end
             Pi=P(i,:);
             Pi(Pi==inf)=[];
             Ai=A(i,:);
@@ -52,6 +59,11 @@ for n=[100 200 300];     % size of the group
             ui(ui==inf)=[];
             Fj=F(j,:);
             Fj(Fj==inf)=[];
+            % if you meet the bug "Matrix dimensions must agree. error dynamic_coda(line 13) CA=A*2+F"
+            % just uncomment the code below. It is a strange bug that matlab add a 0 at the end of Fi
+            if length(Fj)==find(F(j,:)==inf,1)
+                Fj=Fj(1:find(F(j,:)==inf,1)-1);
+            end
             Pj=P(j,:);
             Pj(Pj==inf)=[];
             Aj=A(j,:);
