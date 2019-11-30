@@ -1,0 +1,6 @@
+files in this folder need to open in SPSS;
+"opinion and vote change.sav" and "opinion and vote convert.sav" are data extracted from simulations' raw data;
+"correlation.spv" is test result for continuous variables through  Pearson method;
+"crosstabs.spv" is test result for discrete variables through contingency tables.
+Note 1: abs_name is the absolute value of the raw data; this transformation considered symmetry of the raw data
+Note 2: variable named "stability of the issue" is the variable defined in the paper as "conservative degree".
