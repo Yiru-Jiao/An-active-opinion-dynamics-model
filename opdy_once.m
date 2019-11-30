@@ -18,7 +18,7 @@ for n=[100,200,300];   % size of the group
             sigma=mu/3;
         end
         c=10;       % the population's conservative degree of the issue
-        r=0.35;     % the population's rejection to factions
+        r=0.1;     % the population's rejection to factions
         a=0.3;      % degree of adequate interaction 
         period=10;  % % when the difference of group opinion in successive 10 cycles are less than delta(here is 1E-15), the evolution is believed as stablized
         % Initialization P=[0~1], A=[-1,1], F=[-1,0,1], h=[0~1], u=[-1,-0.1,1]
