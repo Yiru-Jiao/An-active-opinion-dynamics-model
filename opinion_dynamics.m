@@ -8,7 +8,7 @@ mean_value=inf(500,1);
 group_size=inf(500,1);
 turn=inf(500,1);
 cycle=inf(500,1);
-stability_of_the_issue=inf(500,1);
+conservative_degree=inf(500,1);
 rejection_of_factions=inf(500,1);
 degree_of_adequate_interaction=inf(500,1);
 opinion_change=inf(500,1);
@@ -28,7 +28,7 @@ while count_c<=500 % simulate 500 groups; the number could be altered as your ne
     else
         sigma=mu/3;
     end
-    c=randi(10);    % the population's conservative degree of the issue
+    cd=randi(10);   % the population's conservative degree of the issue
     r=0.5*rand();   % the population's rejection to factions
     a=2/3*rand();   % degree of adequate interaction
     period=10;      % when the difference of group opinion in successive 10 cycles are less than delta(here is 1E-15), the evolution is believed as stablized
@@ -44,7 +44,7 @@ while count_c<=500 % simulate 500 groups; the number could be altered as your ne
     Pini(Pini<0|Pini>1)=[];
     P(:,1)=Pini(1:n); % initial individual opinions
     A(:,1)=arrayfun(@action,P(:,1));  % initial individual actions
-    h(:,1)=arrayfun(@history,P(:,1),c*ones(n,1));  % initial history
+    h(:,1)=arrayfun(@history,P(:,1),cd*ones(n,1));  % initial history
     F(:,2)=arrayfun(@faction,h(:,1),r*ones(n,1));  % initial factions
     u(:,1)=0.5; % initial utility must > 0, otherwise interaction will not happen
     t=0; % turn
@@ -84,7 +84,7 @@ while count_c<=500 % simulate 500 groups; the number could be altered as your ne
                 % update xi's parameters
                 Piup=dynamic_coda(Pi(end),Ai,Fi,Aj(end),r);
                 Aiup=action(Piup);
-                hiup=history([Pi,Piup],c);
+                hiup=history([Pi,Piup],cd);
                 P(i,length(Pi)+1)=Piup;
                 A(i,length(Ai)+1)=Aiup;
                 h(i,length(Pi)+1)=hiup;
@@ -92,7 +92,7 @@ while count_c<=500 % simulate 500 groups; the number could be altered as your ne
                 % update xj's parameters
                 Pjup=dynamic_coda(Pj(end),Aj,Fj,Ai(end),r);
                 Ajup=action(Pjup);
-                hjup=history([Pj,Pjup],c);
+                hjup=history([Pj,Pjup],cd);
                 P(j,length(Pj)+1)=Pjup;
                 A(j,length(Aj)+1)=Ajup;
                 h(j,length(Pj)+1)=hjup;
@@ -125,7 +125,7 @@ while count_c<=500 % simulate 500 groups; the number could be altered as your ne
     group_size(count_c)=n;
     turn(count_c)=t;
     cycle(count_c)=c;
-    stability_of_the_issue(count_c)=c;
+    conservative_degree(count_c)=cd;
     rejection_of_factions(count_c)=r;
     degree_of_adequate_interaction(count_c)=a;
     opinion_change(count_c)=P_G(end)-P_G(1);
@@ -139,7 +139,7 @@ while count_c<=500 % simulate 500 groups; the number could be altered as your ne
 end
 % output
 disp('outputing')
-for_correlation=table(mean_value,group_size,turn,cycle,stability_of_the_issue,rejection_of_factions,degree_of_adequate_interaction,opinion_change,vote_change,opinion_convert,vote_convert,PG_AG);
+for_correlation=table(mean_value,group_size,turn,cycle,conservative_degree,rejection_of_factions,degree_of_adequate_interaction,opinion_change,vote_change,opinion_convert,vote_convert,PG_AG);
 writetable(for_correlation, 'opdy.xls', 'WriteRowNames', true,'Sheet',1);
 % inspect initial group opinion distribution
 [a,b]=hist(mean_value(1:50));
