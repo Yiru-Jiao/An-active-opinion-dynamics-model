@@ -6,33 +6,28 @@
 addpath(genpath(pwd));
 %--------------------------
 % storage allocation
-oncedata=zeros(10000,60);
+oncedata=zeros(10000,120);
 countn=1;
-for n=[100,200,300];   % size of the group
-    countmu=1;
+n=200;     % group size
+load('Initial opinion for opdy_once') % load the initial opinions with PG0 equals 0.25,0.4,0.5,0.6,0.75
+for r=[0,0.1,0.2,0.3,0.4,0.5];   % the population's rejection to factions
+    countr=1;
     oncedata0=zeros(10000,20);
-    for mu=[0 0.41 0.51 0.6 1];
-        if (mu<0.5) % make as more numbers in [0,1] as possible
-            sigma=(1-mu)/3;
-        else
-            sigma=mu/3;
-        end
-        c=10;       % the population's conservative degree of the issue
-        r=0.1;     % the population's rejection to factions
-        a=0.3;      % degree of adequate interaction 
-        period=10;  % % when the difference of group opinion in successive 10 cycles are less than delta(here is 1E-15), the evolution is believed as stablized
-        % Initialization P=[0~1], A=[-1,1], F=[-1,0,1], h=[0~1], u=[-1,-0.1,1]
-        % initiate faction distribution
+    cd=10;      % the population's conservative degree of the issue
+    a=0.3;      % degree of adequate interaction 
+    period=10;  % % when the difference of group opinion in successive 10 cycles are less than delta(here is 1E-15), the evolution is believed as stablized
+    % initiate faction distribution
+    num_of_one=ceil((0.5-r)*n);
+    Fini=[ones(num_of_one,1);-ones(num_of_one,1);zeros(n-2*num_of_one,1)];Fini=Fini(randperm(n));
+    for pini=1:5
+        % set storage space of turns
         num_of_width=round(2/n^(1/3)*5000);
         F=inf(n,num_of_width);P=inf(n,num_of_width);A=inf(n,num_of_width);h=inf(n,num_of_width);u=inf(n,num_of_width);
-        num_of_one=ceil((0.5-r)*n);
-        Fini=[ones(num_of_one,1);-ones(num_of_one,1);zeros(n-2*num_of_one,1)];F(:,1)=Fini(randperm(n));
-        % initiate opinion distribution
-        Pini=normrnd(mu,sigma,2.5*n,1);
-        Pini(Pini<0|Pini>1)=[];
-        P(:,1)=Pini(1:n);  % initial individual opinions
+        % Initialization P=[0~1], A=[-1,1], F=[-1,0,1], h=[0~1], u=[-1,-0.1,1]
+        P(:,1)=Pini(:,pini);  % initial individual opinions
         A(:,1)=arrayfun(@action,P(:,1));  % initial individual actions
-        h(:,1)=arrayfun(@history,P(:,1),c*ones(n,1));  % initial history
+        h(:,1)=arrayfun(@history,P(:,1),cd*ones(n,1));  % initial history
+        F(:,1)=Fini;
         F(:,2)=arrayfun(@faction,h(:,1),r*ones(n,1));  % initial factions
         u(:,1)=0.5; % initial utility > 0, otherwise interaction will not happen
         t=0; % turn
@@ -82,7 +77,7 @@ for n=[100,200,300];   % size of the group
                     % update xi's parameters
                     Piup=dynamic_coda(Pi(end),Ai,Fi,Aj(end),r);
                     Aiup=action(Piup);
-                    hiup=history([Pi,Piup],c);
+                    hiup=history([Pi,Piup],cd);
                     P(i,length(Pi)+1)=Piup;
                     A(i,length(Ai)+1)=Aiup;
                     h(i,length(Pi)+1)=hiup;
@@ -90,7 +85,7 @@ for n=[100,200,300];   % size of the group
                     % update xj's parameters
                     Pjup=dynamic_coda(Pj(end),Aj,Fj,Ai(end),r);
                     Ajup=action(Pjup);
-                    hjup=history([Pj,Pjup],c);
+                    hjup=history([Pj,Pjup],cd);
                     P(j,length(Pj)+1)=Pjup;
                     A(j,length(Aj)+1)=Ajup;
                     h(j,length(Pj)+1)=hjup;
@@ -105,10 +100,10 @@ for n=[100,200,300];   % size of the group
             if (sum(length_Pnew-length_P)>a*n)
                 c=c+1;
                 [p_g,a_g,fp_g,fmi_g,fm_g]=ca_group_once(P,A,F,n);
-                P_G=[P_G;p_g];
-                A_G=[A_G;a_g];
-                Fp_G=[Fp_G;fp_g];
-                Fmi_G=[Fmi_G;fmi_g];
+                P_G=[P_G;p_g]; % group opinion
+                A_G=[A_G;a_g]; % group action,voting result
+                Fp_G=[Fp_G;fp_g]; % proportion of F(+)
+                Fmi_G=[Fmi_G;fmi_g]; % proportion of F(0)
                 length_P=length_Pnew;
                 % stop condition; if the group opi nion reached 0 or 1 it would maintain in proceeding cycles, thus this condition would also work
                 if (delta_test(P_G,period,1E-15))
@@ -117,11 +112,12 @@ for n=[100,200,300];   % size of the group
             end
             t=t+1;
         end
-        oncedata0(1:length(P_G),countmu:countmu+3)=[P_G A_G Fp_G Fmi_G];
-        countmu=countmu+4;
+        oncedata0(1:length(P_G),countr:countr+3)=[P_G A_G Fp_G Fmi_G];
+        disp([num2str(countn) '_' num2str(countr)])
+        countr=countr+4;
     end
     oncedata(:,countn:countn+19)=oncedata0;
     countn=countn+20;
 end
 % output
-save('oncedata')
+save('oncedata','oncedata')
