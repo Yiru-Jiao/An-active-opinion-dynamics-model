@@ -1,4 +1,5 @@
 The folder of "correlation test" contains data and result tested in SPSSS; 
 "Data from simulations" are raw data of 1000 repeated simulations with evenly distributed parameters, which made Figure 2, Figure 4, Figure 5, Figure 6, Figure 7, Figure 8(b);
 "data of once_opdy" are raw data of once time simulations with certain parameters, which made Figure 3.
-"loc_satisfied" are raw data of the generated data through the probability distribution that pass k-s test with 86% percentage of grids, which made Figure 8(a).
+"loc_satisfied" are raw data of the generated data through the probability distribution that pass k-s test with 92% percentage of grids, which made Figure 8(a).
+"produce and test" contains 20 times generated data from our probability formula, and their k-s tests result with standard data of model simulation's.
