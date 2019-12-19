@@ -1,0 +1,5 @@
+Files under this folder are for once run of the model.
+"generate initial opinion for opdy_once.mlx" is the real-time script for... for what as the title describes, which provides the same initial opinions for simulations under different conditions;
+"Initial opinion for opdy_once.mat" is the result of the script above;
+Then "opdy_once.m" is the protagonist, simulating 20 groups with varying r of 0.1, 0.2, 0.3, 0.4. Its result is recorded in "data generated from opdy_once.mat"
+* Please read comments before run the codes.
