@@ -1,6 +1,8 @@
 # Code for "An active opinion dynamics model: the gap between voting result and group opinion"
 All .m files could be run in MatLab whose version is higher than R2014a;
+
 The "data_generation_and_probability_test.mlx" requests at least the version of MatLab R2016a.
+
 The netlogo file is a visualization for the model, whose details are a bit different from the MatLab code. You can download and run it with your local software or on the NetLogo Web: <http://www.netlogoweb.org>.
  
 # Citation
